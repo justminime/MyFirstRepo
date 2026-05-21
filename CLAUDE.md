@@ -67,11 +67,10 @@ src/
 Every code change must be tied to a Linear ticket in the **Erezhe** team.
 
 - **Before starting work**: confirm a ticket exists (or create one). Use the ticket ID as the branch name prefix, e.g. `erezhe/ere-42-short-description`.
+- **Never commit directly to `main`**. All changes — features, bug fixes, refactors, security patches, and docs updates — must be made on a dedicated branch and merged in.
 - **While working**: move the ticket to **In Progress** when you start, **In Review** when the branch is pushed.
 - **On merge to main**: mark the ticket **Done**.
 - **Commit messages**: prefix with the ticket ID, e.g. `ERE-42: Add Gen X category pack`.
-
-This applies to all changes — features, bug fixes, refactors, security patches, and docs updates.
 
 ## Out of Scope
 
