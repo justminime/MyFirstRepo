@@ -1,18 +1,15 @@
-import type { CategoryId } from '../types';
+import { useGameContext } from '../context/GameContext';
 import { CATEGORIES } from '../data/categories';
 import { Button } from './ui/Button';
 
-interface Props {
-  onSelect: (id: CategoryId) => void;
-  onBack: () => void;
-}
+export function CategorySelect() {
+  const { startGame, goHome } = useGameContext();
 
-export function CategorySelect({ onSelect, onBack }: Props) {
   return (
     <div className="mx-auto min-h-screen max-w-2xl px-4 py-10">
       <div className="mb-8 flex items-center gap-3">
         <button
-          onClick={onBack}
+          onClick={goHome}
           className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           aria-label="Back to home"
         >
@@ -25,7 +22,7 @@ export function CategorySelect({ onSelect, onBack }: Props) {
         {CATEGORIES.map(cat => (
           <button
             key={cat.id}
-            onClick={() => onSelect(cat.id)}
+            onClick={() => startGame(cat.id)}
             className="flex flex-col items-center rounded-xl border-2 border-gray-200 bg-white p-6 text-center
               shadow-sm transition-all hover:border-blue-400 hover:shadow-md
               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500

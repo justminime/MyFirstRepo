@@ -1,3 +1,4 @@
+import { useGameContext } from '../context/GameContext';
 import { Button } from './ui/Button';
 
 const STEPS = [
@@ -7,11 +8,9 @@ const STEPS = [
   { icon: '✨', text: 'Watch squares fill automatically!' },
 ];
 
-interface Props {
-  onStart: () => void;
-}
+export function LandingPage() {
+  const { prepareGame } = useGameContext();
 
-export function LandingPage({ onStart }: Props) {
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center px-6 py-12 text-center">
       <h1 className="mb-2 text-4xl font-bold text-blue-600">Meeting Bingo</h1>
@@ -22,7 +21,7 @@ export function LandingPage({ onStart }: Props) {
         🔒 Audio processed locally. Never recorded.
       </p>
 
-      <Button className="mb-10 px-8 py-3 text-base" onClick={onStart}>
+      <Button className="mb-10 px-8 py-3 text-base" onClick={prepareGame}>
         New Game
       </Button>
 

@@ -1,27 +1,17 @@
-import { useGame } from './hooks/useGame';
+import { useGameContext } from './context/GameContext';
 import { LandingPage } from './components/LandingPage';
 import { CategorySelect } from './components/CategorySelect';
 import { GameBoard } from './components/GameBoard';
 import { WinScreen } from './components/WinScreen';
 
 export default function App() {
-  const { state, startGame, fillSquare, resetGame, newCard, prepareGame, goHome } = useGame();
+  const { state } = useGameContext();
 
-  if (state.status === 'idle') {
-    return <LandingPage onStart={prepareGame} />;
-  }
+  if (state.status === 'idle') return <LandingPage />;
+  if (state.status === 'setup') return <CategorySelect />;
+  if (state.status === 'playing') return <GameBoard />;
+  if (state.status === 'won') return <WinScreen />;
 
-  if (state.status === 'setup') {
-    return <CategorySelect onSelect={startGame} onBack={goHome} />;
-  }
-
-  if (state.status === 'playing' && state.card) {
-    return <GameBoard game={state} fillSquare={fillSquare} onNewCard={newCard} />;
-  }
-
-  if (state.status === 'won') {
-    return <WinScreen game={state} onPlayAgain={resetGame} onHome={goHome} />;
-  }
-
-  return <LandingPage onStart={prepareGame} />;
+  const _exhaustive: never = state.status;
+  return _exhaustive;
 }

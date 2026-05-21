@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { GameState, Toast } from '../types';
+import type { Toast } from '../types';
 import { getClosestToWin } from '../lib/bingoChecker';
+import { useGameContext } from '../context/GameContext';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
 import { useBingoDetection } from '../hooks/useBingoDetection';
 import { BingoCard } from './BingoCard';
@@ -8,28 +9,23 @@ import { TranscriptPanel } from './TranscriptPanel';
 import { GameControls } from './GameControls';
 import { ToastStack } from './ui/Toast';
 
-interface Props {
-  game: GameState;
-  fillSquare: (row: number, col: number) => void;
-  onNewCard: () => void;
-}
-
-export function GameBoard({ game, fillSquare, onNewCard }: Props) {
+export function GameBoard() {
+  const { state, fillSquare, newCard } = useGameContext();
   const { isSupported, isListening, transcript, interimTranscript, startListening, stopListening } =
     useSpeechRecognition();
 
   const filledWords = useMemo(
     () =>
-      game.card?.squares
+      state.card?.squares
         .flat()
         .filter(sq => sq.isFilled && !sq.isFreeSpace)
         .map(sq => sq.word) ?? [],
-    [game.card],
+    [state.card],
   );
 
   const { lastDetected } = useBingoDetection({
     transcript,
-    card: game.card,
+    card: state.card,
     filledWords,
     fillSquare,
   });
@@ -59,8 +55,8 @@ export function GameBoard({ game, fillSquare, onNewCard }: Props) {
     setToasts(prev => prev.filter(t => t.id !== id));
   }, []);
 
-  const hint = game.card ? getClosestToWin(game.card) : null;
-  const userFilled = Math.max(0, game.filledCount - 1);
+  const hint = state.card ? getClosestToWin(state.card) : null;
+  const userFilled = Math.max(0, state.filledCount - 1);
 
   return (
     <div className="mx-auto min-h-screen max-w-xl bg-gray-50 px-4 py-6">
@@ -79,10 +75,10 @@ export function GameBoard({ game, fillSquare, onNewCard }: Props) {
       </div>
 
       {/* Card */}
-      {game.card && (
+      {state.card && (
         <BingoCard
-          card={game.card}
-          winningLine={game.winningLine}
+          card={state.card}
+          winningLine={state.winningLine}
           onSquareClick={fillSquare}
         />
       )}
@@ -108,7 +104,7 @@ export function GameBoard({ game, fillSquare, onNewCard }: Props) {
         isSupported={isSupported}
         filledCount={userFilled}
         onToggleListening={handleToggleListening}
-        onNewCard={onNewCard}
+        onNewCard={newCard}
       />
 
       <ToastStack toasts={toasts} onDismiss={dismissToast} />

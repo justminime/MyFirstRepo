@@ -1,18 +1,13 @@
 import { useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
-import type { GameState } from '../types';
 import { CATEGORY_MAP } from '../data/categories';
 import { shareResult } from '../lib/shareUtils';
+import { useGameContext } from '../context/GameContext';
 import { BingoCard } from './BingoCard';
 import { Button } from './ui/Button';
 
-interface Props {
-  game: GameState;
-  onPlayAgain: () => void;
-  onHome: () => void;
-}
-
-export function WinScreen({ game, onPlayAgain, onHome }: Props) {
+export function WinScreen() {
+  const { state, resetGame, goHome } = useGameContext();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // Fire confetti exactly once on mount; clean up canvas on unmount (M-9 fix)
@@ -32,16 +27,16 @@ export function WinScreen({ game, onPlayAgain, onHome }: Props) {
   const handlePlayAgain = () => {
     canvasRef.current?.remove();
     canvasRef.current = null;
-    onPlayAgain();
+    resetGame();
   };
 
   const elapsed =
-    game.startedAt && game.completedAt
-      ? Math.round((game.completedAt - game.startedAt) / 60_000)
+    state.startedAt && state.completedAt
+      ? Math.round((state.completedAt - state.startedAt) / 60_000)
       : null;
 
-  const categoryName = game.category ? (CATEGORY_MAP[game.category]?.name ?? game.category) : '';
-  const userFilled = Math.max(0, game.filledCount - 1);
+  const categoryName = state.category ? (CATEGORY_MAP[state.category]?.name ?? state.category) : '';
+  const userFilled = Math.max(0, state.filledCount - 1);
 
   return (
     <div className="mx-auto min-h-screen max-w-xl px-4 py-10">
@@ -55,19 +50,19 @@ export function WinScreen({ game, onPlayAgain, onHome }: Props) {
         {elapsed !== null && (
           <Stat label="Time to BINGO" value={`${elapsed} min`} />
         )}
-        {game.winningWord && (
-          <Stat label="Winning word" value={`"${game.winningWord}"`} />
+        {state.winningWord && (
+          <Stat label="Winning word" value={`"${state.winningWord}"`} />
         )}
         <Stat label="Squares filled" value={`${userFilled}/24`} />
         {categoryName && <Stat label="Category" value={categoryName} />}
       </div>
 
       {/* Final card — read-only */}
-      {game.card && (
+      {state.card && (
         <div className="mb-6">
           <BingoCard
-            card={game.card}
-            winningLine={game.winningLine}
+            card={state.card}
+            winningLine={state.winningLine}
             onSquareClick={() => undefined}
           />
         </div>
@@ -77,14 +72,14 @@ export function WinScreen({ game, onPlayAgain, onHome }: Props) {
         <Button
           variant="secondary"
           className="w-full"
-          onClick={() => void shareResult(game)}
+          onClick={() => void shareResult(state)}
         >
           📋 Share Result
         </Button>
         <Button variant="primary" className="w-full" onClick={handlePlayAgain}>
           Play Again
         </Button>
-        <Button variant="ghost" className="w-full" onClick={onHome}>
+        <Button variant="ghost" className="w-full" onClick={goHome}>
           Back to Home
         </Button>
       </div>
