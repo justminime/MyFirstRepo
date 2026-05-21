@@ -55,6 +55,26 @@ export const CATEGORIES: Category[] = [
       'branch', 'release', 'rollback', 'feature flag', 'A/B test',
     ],
   },
+  {
+    id: 'gen-x',
+    name: 'Gen X Energy',
+    description: 'Whatever. This could\'ve been an email.',
+    icon: '😑',
+    words: [
+      'this could be an email', 'whatever', 'just ship it', 'hard stop',
+      'back in my day', 'no duh', 'is there an agenda', 'I need coffee',
+      'tried that in the nineties', 'wrap it up', 'not my circus', 'reality check',
+      'cool story', 'TL;DR', 'just pick one', 'skip the deck',
+      'done at five', 'do not overthink it', 'multitasking', 'above my pay grade',
+      'just decide', 'get it done', 'been there done that', 'keep it simple',
+      'you do you', 'get real', 'not to be that guy', 'talk to the hand',
+      'as if', 'office politics', 'just be direct', 'work smarter not harder',
+      'I will figure it out', 'can we move on', 'do we need this meeting',
+      'this is fine', 'another meeting', 'dial it back', 'hello McFly',
+      'I will pass', 'old school', 'been doing this for years', 'not reinventing the wheel',
+      'I am on mute', 'not my problem', 'five o\'clock somewhere', 'I know right',
+    ],
+  },
 ];
 
 export const CATEGORY_MAP = Object.fromEntries(
