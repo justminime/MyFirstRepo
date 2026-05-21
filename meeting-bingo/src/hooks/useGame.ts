@@ -23,6 +23,9 @@ export interface UseGameReturn {
   startGame: (categoryId: CategoryId) => void;
   fillSquare: (row: number, col: number) => void;
   resetGame: () => void;
+  newCard: () => void;
+  prepareGame: () => void;
+  goHome: () => void;
 }
 
 export function useGame(): UseGameReturn {
@@ -114,9 +117,34 @@ export function useGame(): UseGameReturn {
     });
   }, [setState]);
 
+  const newCard = useCallback(() => {
+    setState(prev => {
+      if (!prev.category) return prev;
+      const card = generateCard(prev.category);
+      return {
+        ...prev,
+        card,
+        winningLine: null,
+        winningWord: null,
+        status: 'playing' as const,
+        startedAt: Date.now(),
+        completedAt: null,
+        filledCount: countFilled(card),
+      };
+    });
+  }, [setState]);
+
+  const prepareGame = useCallback(() => {
+    setState(prev => ({ ...prev, status: 'setup' as const }));
+  }, [setState]);
+
+  const goHome = useCallback(() => {
+    setState({ ...INITIAL_STATE });
+  }, [setState]);
+
   const value = useMemo(
-    () => ({ state, startGame, fillSquare, resetGame }),
-    [state, startGame, fillSquare, resetGame],
+    () => ({ state, startGame, fillSquare, resetGame, newCard, prepareGame, goHome }),
+    [state, startGame, fillSquare, resetGame, newCard, prepareGame, goHome],
   );
 
   return value;
