@@ -3,11 +3,14 @@ import { useState, useCallback } from 'react';
 export function useLocalStorage<T>(
   key: string,
   initialValue: T,
+  sanitize?: (raw: unknown) => T,
 ): [T, (value: T | ((prev: T) => T)) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(key);
-      return item ? (JSON.parse(item) as T) : initialValue;
+      if (!item) return initialValue;
+      const parsed: unknown = JSON.parse(item);
+      return sanitize ? sanitize(parsed) : (parsed as T);
     } catch {
       return initialValue;
     }

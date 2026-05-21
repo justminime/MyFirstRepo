@@ -1,10 +1,31 @@
 import { useCallback, useMemo } from 'react';
-import type { CategoryId, GameState } from '../types';
+import type { CategoryId, GameState, GameStatus } from '../types';
 import { generateCard } from '../lib/cardGenerator';
 import { checkForBingo, countFilled } from '../lib/bingoChecker';
 import { useLocalStorage } from './useLocalStorage';
 
 const STORAGE_KEY = 'meeting-bingo:game-state';
+
+const VALID_STATUSES = new Set<GameStatus>(['idle', 'setup', 'playing', 'won']);
+const VALID_CATEGORIES = new Set<CategoryId>(['agile', 'corporate', 'tech', 'gen-x']);
+
+function sanitizeGameState(raw: unknown): GameState {
+  if (!raw || typeof raw !== 'object') return INITIAL_STATE;
+  const s = raw as Record<string, unknown>;
+  if (!VALID_STATUSES.has(s['status'] as GameStatus)) return INITIAL_STATE;
+  if (s['category'] !== null && !VALID_CATEGORIES.has(s['category'] as CategoryId)) return INITIAL_STATE;
+  if (s['card'] !== null && s['card'] !== undefined) {
+    const squares = (s['card'] as Record<string, unknown>)['squares'];
+    if (
+      !Array.isArray(squares) ||
+      squares.length !== 5 ||
+      !(squares as unknown[]).every(row => Array.isArray(row) && (row as unknown[]).length === 5)
+    ) {
+      return INITIAL_STATE;
+    }
+  }
+  return raw as GameState;
+}
 
 const INITIAL_STATE: GameState = {
   status: 'idle',
@@ -29,7 +50,7 @@ export interface UseGameReturn {
 }
 
 export function useGame(): UseGameReturn {
-  const [state, setState] = useLocalStorage<GameState>(STORAGE_KEY, INITIAL_STATE);
+  const [state, setState] = useLocalStorage<GameState>(STORAGE_KEY, INITIAL_STATE, sanitizeGameState);
 
   const startGame = useCallback((categoryId: CategoryId) => {
     const card = generateCard(categoryId);
@@ -103,34 +124,25 @@ export function useGame(): UseGameReturn {
   const resetGame = useCallback(() => {
     setState(prev => {
       const categoryId = prev.category;
-      if (!categoryId) {
+      if (!categoryId) return { ...INITIAL_STATE };
+      try {
+        const card = generateCard(categoryId);
+        return { ...INITIAL_STATE, status: 'setup', category: categoryId, card, filledCount: countFilled(card) };
+      } catch {
         return { ...INITIAL_STATE };
       }
-      const card = generateCard(categoryId);
-      return {
-        ...INITIAL_STATE,
-        status: 'setup',
-        category: categoryId,
-        card,
-        filledCount: countFilled(card),
-      };
     });
   }, [setState]);
 
   const newCard = useCallback(() => {
     setState(prev => {
       if (!prev.category) return prev;
-      const card = generateCard(prev.category);
-      return {
-        ...prev,
-        card,
-        winningLine: null,
-        winningWord: null,
-        status: 'playing' as const,
-        startedAt: Date.now(),
-        completedAt: null,
-        filledCount: countFilled(card),
-      };
+      try {
+        const card = generateCard(prev.category);
+        return { ...prev, card, winningLine: null, winningWord: null, status: 'playing' as const, startedAt: Date.now(), completedAt: null, filledCount: countFilled(card) };
+      } catch {
+        return { ...INITIAL_STATE };
+      }
     });
   }, [setState]);
 
