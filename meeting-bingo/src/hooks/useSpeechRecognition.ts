@@ -4,6 +4,18 @@ const TERMINAL_ERRORS = new Set(['not-allowed', 'service-not-allowed']);
 const BACKOFF_INITIAL_MS = 300;
 const BACKOFF_CAP_MS = 5_000;
 
+// SpeechRecognition is not in TypeScript 6's DOM lib; declare the subset we use
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
+  onend: (() => void) | null;
+}
+
 const getSpeechRecognition = (): (new () => SpeechRecognition) | null =>
   (window as unknown as Record<string, unknown>)['SpeechRecognition'] as (new () => SpeechRecognition) | null
   ?? (window as unknown as Record<string, unknown>)['webkitSpeechRecognition'] as (new () => SpeechRecognition) | null

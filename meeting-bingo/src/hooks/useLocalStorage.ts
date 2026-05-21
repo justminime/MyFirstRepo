@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 export function useLocalStorage<T>(
   key: string,
   initialValue: T,
-): [T, (value: T) => void] {
+): [T, (value: T | ((prev: T) => T)) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(key);
@@ -14,13 +14,16 @@ export function useLocalStorage<T>(
   });
 
   const setValue = useCallback(
-    (value: T) => {
-      try {
-        window.localStorage.setItem(key, JSON.stringify(value));
-      } catch {
-        // Ignore write errors (private browsing, storage quota exceeded)
-      }
-      setStoredValue(value);
+    (value: T | ((prev: T) => T)) => {
+      setStoredValue(prev => {
+        const next = typeof value === 'function' ? (value as (p: T) => T)(prev) : value;
+        try {
+          window.localStorage.setItem(key, JSON.stringify(next));
+        } catch {
+          // Ignore write errors (private browsing, storage quota exceeded)
+        }
+        return next;
+      });
     },
     [key],
   );
