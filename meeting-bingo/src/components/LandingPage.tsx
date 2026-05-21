@@ -14,10 +14,10 @@ export function LandingPage() {
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center px-6 py-12 text-center">
       <h1 className="mb-2 text-4xl font-bold text-blue-600">Meeting Bingo</h1>
-      <p className="mb-4 text-lg text-gray-500">Turn any meeting into a game.</p>
+      <p className="mb-4 text-lg text-gray-500 dark:text-gray-400">Turn any meeting into a game.</p>
 
       {/* Privacy note — must be above the fold (UXR requirement) */}
-      <p className="mb-6 rounded-lg bg-blue-50 px-4 py-2 text-sm text-blue-700">
+      <p className="mb-6 rounded-lg bg-blue-50 px-4 py-2 text-sm text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
         🔒 Audio is processed by your browser&apos;s speech engine. In Chrome, this uses Google&apos;s servers. Nothing is stored by this app.
       </p>
 
@@ -25,16 +25,16 @@ export function LandingPage() {
         New Game
       </Button>
 
-      <div className="w-full rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-400">
+      <div className="w-full rounded-xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
           How It Works
         </h2>
         <ol className="space-y-3 text-left">
           {STEPS.map((step, i) => (
             <li key={i} className="flex items-start gap-3">
               <span className="text-xl">{step.icon}</span>
-              <span className="text-sm text-gray-600">
-                <strong className="text-gray-800">Step {i + 1}:</strong> {step.text}
+              <span className="text-sm text-gray-600 dark:text-gray-300">
+                <strong className="text-gray-800 dark:text-gray-100">Step {i + 1}:</strong> {step.text}
               </span>
             </li>
           ))}

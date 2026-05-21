@@ -33,14 +33,14 @@ export function BingoSquare({ word, isFilled, isAutoFilled, isFreeSpace, isWinni
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
         'hover:scale-105 active:scale-95',
         // Default
-        !isFilled && !isFreeSpace && 'border-gray-200 bg-white text-gray-700 hover:border-blue-400',
+        !isFilled && !isFreeSpace && 'border-gray-200 bg-white text-gray-700 hover:border-blue-400 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200',
         // Filled (manual)
         isFilled && !isAutoFilled && !isFreeSpace && !isWinningSquare && 'border-blue-600 bg-blue-500 text-white',
         // Auto-filled
         isAutoFilled && isFilled && !isWinningSquare && 'border-blue-600 bg-blue-500 text-white',
         showPulse && 'animate-pulse',
         // Free space
-        isFreeSpace && 'cursor-default border-amber-300 bg-amber-100 text-amber-700',
+        isFreeSpace && 'cursor-default border-amber-300 bg-amber-100 text-amber-700 dark:border-amber-600 dark:bg-amber-900/40 dark:text-amber-300',
         // Winning
         isWinningSquare && 'border-green-600 bg-green-400 text-white ring-2 ring-green-600',
       )}

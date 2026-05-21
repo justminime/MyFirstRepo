@@ -42,11 +42,11 @@ export function WinScreen() {
     <div className="mx-auto min-h-screen max-w-xl px-4 py-10">
       <div className="mb-6 text-center">
         <h1 className="text-5xl font-bold text-green-600">BINGO!</h1>
-        <p className="mt-1 text-gray-500">You got it! 🎉</p>
+        <p className="mt-1 text-gray-500 dark:text-gray-400">You got it! 🎉</p>
       </div>
 
       {/* Stats */}
-      <div className="mb-6 grid grid-cols-2 gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+      <div className="mb-6 grid grid-cols-2 gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
         {elapsed !== null && (
           <Stat label="Time to BINGO" value={`${elapsed} min`} />
         )}
@@ -90,8 +90,8 @@ export function WinScreen() {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="text-center">
-      <p className="text-xs text-gray-400">{label}</p>
-      <p className="text-sm font-semibold text-gray-800">{value}</p>
+      <p className="text-xs text-gray-400 dark:text-gray-500">{label}</p>
+      <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">{value}</p>
     </div>
   );
 }
