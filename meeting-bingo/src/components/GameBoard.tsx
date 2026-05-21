@@ -58,17 +58,22 @@ export function GameBoard() {
   const hint = state.card ? getClosestToWin(state.card) : null;
   const userFilled = Math.max(0, state.filledCount - 1);
 
+  const handleGoHome = useCallback(() => {
+    if (userFilled > 0 && !window.confirm('Leave game? Your progress will be lost.')) return;
+    if (isListening) stopListening();
+    goHome();
+  }, [userFilled, isListening, stopListening, goHome]);
+
   return (
     <div className="mx-auto min-h-screen max-w-xl bg-gray-50 px-4 py-6">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <button
-            onClick={() => {
-              if (window.confirm('Leave game? Your progress will be lost.')) goHome();
-            }}
-            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-200 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            onClick={handleGoHome}
+            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
             aria-label="Back to menu"
+            title="Leave game (progress will be lost)"
           >
             ← Menu
           </button>
