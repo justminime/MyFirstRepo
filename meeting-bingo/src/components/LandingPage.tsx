@@ -18,7 +18,7 @@ export function LandingPage() {
 
       {/* Privacy note — must be above the fold (UXR requirement) */}
       <p className="mb-6 rounded-lg bg-blue-50 px-4 py-2 text-sm text-blue-700">
-        🔒 Audio processed locally. Never recorded.
+        🔒 Audio is processed by your browser&apos;s speech engine. In Chrome, this uses Google&apos;s servers. Nothing is stored by this app.
       </p>
 
       <Button className="mb-10 px-8 py-3 text-base" onClick={prepareGame}>
