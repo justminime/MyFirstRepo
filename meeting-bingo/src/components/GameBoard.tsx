@@ -64,10 +64,8 @@ export function GameBoard() {
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <button
-            onClick={() => {
-              if (window.confirm('Leave game? Your progress will be lost.')) goHome();
-            }}
-            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-200 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            onClick={goHome}
+            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
             aria-label="Back to menu"
           >
             ← Menu
