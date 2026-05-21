@@ -10,7 +10,7 @@ import { GameControls } from './GameControls';
 import { ToastStack } from './ui/Toast';
 
 export function GameBoard() {
-  const { state, fillSquare, newCard } = useGameContext();
+  const { state, fillSquare, newCard, goHome } = useGameContext();
   const { isSupported, isListening, transcript, interimTranscript, error: micError, startListening, stopListening } =
     useSpeechRecognition();
 
@@ -62,7 +62,18 @@ export function GameBoard() {
     <div className="mx-auto min-h-screen max-w-xl bg-gray-50 px-4 py-6">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-blue-600">Meeting Bingo</h1>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              if (window.confirm('Leave game? Your progress will be lost.')) goHome();
+            }}
+            className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            aria-label="Back to menu"
+          >
+            ←
+          </button>
+          <h1 className="text-xl font-bold text-blue-600">Meeting Bingo</h1>
+        </div>
         <div className="flex items-center gap-3">
           {isListening && (
             <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
