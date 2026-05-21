@@ -1,7 +1,18 @@
 import type { GameState } from '../types';
 import { CATEGORY_MAP } from '../data/categories';
 
-const APP_URL = (import.meta.env['VITE_APP_URL'] as string | undefined) ?? 'https://meeting-bingo.vercel.app';
+const FALLBACK_URL = 'https://meeting-bingo.vercel.app';
+
+function safeAppUrl(): string {
+  const raw = import.meta.env['VITE_APP_URL'] as string | undefined;
+  try {
+    const u = new URL(raw ?? '');
+    if (u.protocol === 'https:') return u.origin;
+  } catch { /* invalid or missing — fall through */ }
+  return FALLBACK_URL;
+}
+
+const APP_URL = safeAppUrl();
 
 export function buildShareText(game: GameState): string {
   const category = game.category ? (CATEGORY_MAP[game.category]?.name ?? game.category) : 'Unknown';
