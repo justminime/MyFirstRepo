@@ -67,10 +67,10 @@ export function GameBoard() {
             onClick={() => {
               if (window.confirm('Leave game? Your progress will be lost.')) goHome();
             }}
-            className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-200 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             aria-label="Back to menu"
           >
-            ←
+            ← Menu
           </button>
           <h1 className="text-xl font-bold text-blue-600">Meeting Bingo</h1>
         </div>
