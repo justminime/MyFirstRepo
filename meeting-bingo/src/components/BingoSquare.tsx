@@ -28,7 +28,7 @@ export function BingoSquare({ word, isFilled, isAutoFilled, isFreeSpace, isWinni
       aria-pressed={isFilled}
       aria-label={isFreeSpace ? 'Free space' : word}
       className={cn(
-        'relative flex aspect-square items-center justify-center rounded-lg border-2 p-1',
+        'relative flex aspect-square min-h-[44px] items-center justify-center rounded-lg border-2 p-1',
         'text-center text-xs font-medium leading-tight transition-all duration-150',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
         'hover:scale-105 active:scale-95',

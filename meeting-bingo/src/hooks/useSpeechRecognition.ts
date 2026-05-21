@@ -107,8 +107,19 @@ export function useSpeechRecognition(): UseSpeechRecognitionReturn {
 
     recognitionRef.current = recognition;
 
+    // Restart immediately when tab becomes visible after being hidden
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible' && shouldListenRef.current) {
+        clearTimer();
+        backoffRef.current = BACKOFF_INITIAL_MS;
+        try { recognition.start(); } catch { /* already running */ }
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
     return () => {
       clearTimer();
+      document.removeEventListener('visibilitychange', handleVisibility);
       shouldListenRef.current = false;
       recognition.onresult = null;
       recognition.onerror = null;

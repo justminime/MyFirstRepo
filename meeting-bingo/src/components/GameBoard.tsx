@@ -11,7 +11,7 @@ import { ToastStack } from './ui/Toast';
 
 export function GameBoard() {
   const { state, fillSquare, newCard } = useGameContext();
-  const { isSupported, isListening, transcript, interimTranscript, startListening, stopListening } =
+  const { isSupported, isListening, transcript, interimTranscript, error: micError, startListening, stopListening } =
     useSpeechRecognition();
 
   const filledWords = useMemo(
@@ -102,6 +102,7 @@ export function GameBoard() {
       <GameControls
         isListening={isListening}
         isSupported={isSupported}
+        micError={micError}
         filledCount={userFilled}
         onToggleListening={handleToggleListening}
         onNewCard={newCard}
