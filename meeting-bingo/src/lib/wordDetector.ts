@@ -68,7 +68,11 @@ export function detectWordsWithAliases(
     if (!aliases) continue;
 
     for (const alias of aliases) {
-      if (normalized.includes(alias)) {
+      const na = normalizeText(alias);
+      const matched = na.includes(' ')
+        ? normalized.includes(na)
+        : new RegExp(`\\b${escapeRegex(na)}\\b`, 'i').test(normalized);
+      if (matched) {
         detected.push(word);
         break;
       }
