@@ -22,11 +22,11 @@ export function GameControls({ isListening, isSupported, micError, filledCount, 
   return (
     <div className="mt-4 space-y-3">
       {!isSupported ? (
-        <p className="rounded-lg bg-amber-50 px-3 py-2 text-center text-sm text-amber-700">
+        <p className="rounded-lg bg-amber-50 px-3 py-2 text-center text-sm text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">
           Speech recognition is not available in this browser. You can still play manually.
         </p>
       ) : micDenied ? (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-center text-sm text-red-700">
+        <p className="rounded-lg bg-red-50 px-3 py-2 text-center text-sm text-red-700 dark:bg-red-900/30 dark:text-red-300">
           Microphone access denied. You can still play manually by tapping squares.
         </p>
       ) : (

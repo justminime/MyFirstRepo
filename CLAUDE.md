@@ -74,4 +74,4 @@ Every code change must be tied to a Linear ticket in the **Erezhe** team.
 
 ## Out of Scope
 
-User accounts, multiplayer, custom word lists, sound effects, dark mode, any backend.
+User accounts, multiplayer, custom word lists, sound effects, any backend.

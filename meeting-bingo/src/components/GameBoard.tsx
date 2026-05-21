@@ -65,13 +65,13 @@ export function GameBoard() {
   }, [userFilled, isListening, stopListening, goHome]);
 
   return (
-    <div className="mx-auto min-h-screen max-w-xl bg-gray-50 px-4 py-6">
+    <div className="mx-auto min-h-screen max-w-xl bg-gray-50 px-4 py-6 dark:bg-gray-900">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <button
             onClick={handleGoHome}
-            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 dark:hover:bg-red-900/30 dark:hover:text-red-400"
             aria-label="Back to menu"
             title="Leave game (progress will be lost)"
           >
@@ -86,7 +86,7 @@ export function GameBoard() {
               Listening…
             </span>
           )}
-          <span className="text-sm text-gray-500">{userFilled}/24 squares</span>
+          <span className="text-sm text-gray-500 dark:text-gray-400">{userFilled}/24 squares</span>
         </div>
       </div>
 
@@ -101,7 +101,7 @@ export function GameBoard() {
 
       {/* Near-bingo hint */}
       {hint?.needed === 1 && hint.nextWord && (
-        <div className="mt-3 rounded-lg bg-amber-50 py-2 text-center text-sm font-medium text-amber-700">
+        <div className="mt-3 rounded-lg bg-amber-50 py-2 text-center text-sm font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">
           One away! Need: <strong>{hint.nextWord}</strong>
         </div>
       )}
